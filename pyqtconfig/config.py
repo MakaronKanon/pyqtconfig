@@ -7,7 +7,7 @@ from .qt import *
 
 import os
 import sys
-import numpy as np
+#import numpy as np
 import types
 
 from collections import defaultdict, OrderedDict
@@ -357,7 +357,7 @@ def _event_QPlainTextEdit(self):
         the user's pressing the "Apply changes" to the code button. Attaching to the 
         modified signal would trigger recalculation on every key-press.
     """
-    return self.sourceChangesApplied
+    return self.textChanged
 
 
 # QLineEdit
@@ -891,7 +891,7 @@ class ConfigManagerBase(QObject):
 
         return root
 
-    def setXMLConfig(self, root):
+    def setXMLConfig(self, root, trigger_update=False):
 
         config = {}
         for xconfig in root.findall('Config/ConfigSetting'):
@@ -900,7 +900,7 @@ class ConfigManagerBase(QObject):
                 v = CONVERT_TYPE_FROM_XML[xconfig.get('type')](xconfig)
             config[xconfig.get('id')] = v
 
-        self.set_many(config, trigger_update=False)
+        self.set_many(config, trigger_update=trigger_update)
 
     def as_dict(self):
         '''
